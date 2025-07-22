@@ -6,7 +6,7 @@ const START_ADDRESS: u16 = 0x200;
 const FONTSET_SIZE: usize = 80;
 
 pub struct Chip8 {
-    ack: [u16; 16],
+    stack: [u16; 16],
     pc: u16,
     sp: u16,
     index: u16,
@@ -21,7 +21,7 @@ pub struct Chip8 {
 impl Chip8 {
     pub fn new() -> Self {
         let mut emu = Self {
-            ack: [0; 16],
+            stack: [0; 16],
             pc: START_ADDRESS,
             sp: 0,
             index: 0,
@@ -52,13 +52,13 @@ impl Chip8 {
     }
 
     fn push(&mut self, value: u16) {
-        self.ack[self.sp as usize] = value;
+        self.stack[self.sp as usize] = value;
         self.sp += 1;
     }
 
     fn pop(&mut self) -> u16 {
         self.sp -= 1;
-        self.ack[self.sp as usize]
+        self.stack[self.sp as usize]
     }
 
     pub fn clock(&mut self) {
